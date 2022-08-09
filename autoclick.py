@@ -49,22 +49,6 @@ GAME_LEFT_WALL = GAME_SIDE_MARGIN + GAME_BORDER_WIDTH
 GAME_FPS = 40
 START_GAME = True
 ACTUAL_GAME_IS_BEING_PLAYED = True
-# Arrays for animated star background
-star_field_slow = []
-star_field_medium = []
-star_field_fast = []
-for slow_stars in range(50):
-    star_x_coordinate = random.randrange(0, WINDOW_WIDTH)
-    star_y_coordinate = random.randrange(0, WINDOW_HEIGHT)
-    star_field_slow.append([star_x_coordinate, star_y_coordinate])
-for medium_stars in range(35):
-    star_x_coordinate = random.randrange(0, WINDOW_WIDTH)
-    star_y_coordinate = random.randrange(0, WINDOW_HEIGHT)
-    star_field_medium.append([star_x_coordinate, star_y_coordinate])
-for fast_stars in range(15):
-    star_x_coordinate = random.randrange(0, WINDOW_WIDTH)
-    star_y_coordinate = random.randrange(0, WINDOW_HEIGHT)
-    star_field_fast.append([star_x_coordinate, star_y_coordinate])
 
 clock = pygame.time.Clock()
 game_display = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -77,7 +61,7 @@ title_font = pygame.font.SysFont('Eurostile Bold Extended', 35, True)
 title_press_start_font = pygame.font.SysFont(
     'Eurostile Bold Extended', 17, True)
 title_copyright_font = pygame.font.SysFont('Eurostile Bold Extended', 12, True)
-pygame.display.set_caption(' STAR INVASION ')
+pygame.display.set_caption(' Mouse Autoclicker ')
 
 
 def handle_events():
@@ -146,24 +130,6 @@ def main_menu_is_active():
         else:
             text_quit = text_format(
                 "QUIT", 'Eurostile Bold Extended', 40, GREY)
-        for star in star_field_slow:
-            star[1] += 1
-            if star[1] > WINDOW_HEIGHT:
-                star[0] = random.randrange(0, WINDOW_WIDTH)
-                star[1] = random.randrange(-20, -5)
-            pygame.draw.circle(game_display, GREY, star, 3)
-        for star in star_field_medium:
-            star[1] += 4
-            if star[1] > WINDOW_HEIGHT:
-                star[0] = random.randrange(0, WINDOW_WIDTH)
-                star[1] = random.randrange(-20, -5)
-            pygame.draw.circle(game_display, GREY, star, 2)
-        for star in star_field_fast:
-            star[1] += 8
-            if star[1] > WINDOW_HEIGHT:
-                star[0] = random.randrange(0, WINDOW_WIDTH)
-                star[1] = random.randrange(-20, -5)
-            pygame.draw.circle(game_display, GREY, star, 1)
 
         start_rect = text_start.get_rect()
         quit_rect = text_quit.get_rect()
@@ -189,24 +155,6 @@ def show_background():
                      WINDOW_WIDTH - GAME_SIDE_MARGIN * 2, WINDOW_HEIGHT - GAME_BOTTOM_MARGIN * 2))
     pygame.draw.rect(game_display, (BACKGROUND_COLOR), (GAME_LEFT_WALL, GAME_TOP_WALL, WINDOW_WIDTH - GAME_LEFT_WALL -
                      GAME_SIDE_MARGIN - GAME_BORDER_WIDTH, WINDOW_HEIGHT - GAME_TOP_WALL - GAME_BOTTOM_MARGIN - GAME_BORDER_WIDTH))
-    for star in star_field_slow:
-        star[1] += 1
-        if star[1] > WINDOW_HEIGHT:
-            star[0] = random.randrange(0, WINDOW_WIDTH)
-            star[1] = random.randrange(-20, -5)
-        pygame.draw.circle(game_display, GREY, star, 3)
-    for star in star_field_medium:
-        star[1] += 4
-        if star[1] > WINDOW_HEIGHT:
-            star[0] = random.randrange(0, WINDOW_WIDTH)
-            star[1] = random.randrange(-20, -5)
-        pygame.draw.circle(game_display, CYAN, star, 2)
-    for star in star_field_fast:
-        star[1] += 8
-        if star[1] > WINDOW_HEIGHT:
-            star[0] = random.randrange(0, WINDOW_WIDTH)
-            star[1] = random.randrange(-20, -5)
-        pygame.draw.circle(game_display, YELLOW, star, 1)
 
 
 def pause_game():
