@@ -6,7 +6,6 @@ import os
 from os import path
 import sys
 import pygame
-import random
 from pygame.locals import *
 import time
 import threading
@@ -59,8 +58,8 @@ score_equals_font = pygame.font.SysFont('Eurostile Bold Extended', 10, True)
 hero_lives_font = pygame.font.SysFont('Eurostile Bold Extended', 10, True)
 title_font = pygame.font.SysFont('Eurostile Bold Extended', 35, True)
 title_press_start_font = pygame.font.SysFont(
-    'Eurostile Bold Extended', 17, True)
-title_copyright_font = pygame.font.SysFont('Eurostile Bold Extended', 12, True)
+    'Eurostile Bold Extended', 23, True)
+title_copyright_font = pygame.font.SysFont('Eurostile Bold Extended', 25, True)
 pygame.display.set_caption(' Mouse Autoclicker ')
 
 
@@ -82,27 +81,25 @@ def text_format(message, textFont, textSize, textColor):
 def main_menu_is_active():
     show_background()
     Show_Menu_Screen = True
-    Selected_Option = "PLAY"
+    Selected_Option = "START"
     while Show_Menu_Screen:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP and Selected_Option == "QUIT":
-                    Selected_Option = "CONTROLS"
-                elif event.key == pygame.K_UP and Selected_Option == "PLAY":
-                    Selected_Option = "QUIT"
-                elif event.key == pygame.K_UP and Selected_Option == "CONTROLS":
-                    Selected_Option = "PLAY"
-                elif event.key == pygame.K_DOWN and Selected_Option == "PLAY":
-                    Selected_Option = "CONTROLS"
-                elif event.key == pygame.K_DOWN and Selected_Option == "CONTROLS":
+                if event.key == pygame.K_UP and Selected_Option == "START":
                     Selected_Option = "QUIT"
                 elif event.key == pygame.K_DOWN and Selected_Option == "QUIT":
-                    Selected_Option = "PLAY"
-                if event.key == pygame.K_RETURN:
-                    if Selected_Option == "PLAY":
+                    Selected_Option = "START"
+                elif event.key == pygame.K_UP and Selected_Option == "QUIT":
+                    Selected_Option = "START"
+                elif event.key == pygame.K_DOWN and Selected_Option == "QUIT":
+                    Selected_Option = "START"
+                elif event.key == pygame.K_DOWN and Selected_Option == "START":
+                    Selected_Option = "QUIT"
+                elif event.key == pygame.K_RETURN:
+                    if Selected_Option == "START":
                         Show_Menu_Screen = False
                     if Selected_Option == "QUIT":
                         pygame.quit()
@@ -112,18 +109,12 @@ def main_menu_is_active():
         game_display.blit(game_display, (0, 0))
         game_display.fill(BACKGROUND_COLOR)
         # title = text_format("   | STAR INVASION |", 'Eurostile Bold Extended', 70, WHITE)
-        if Selected_Option == "PLAY":
+        if Selected_Option == "START":
             text_start = text_format(
-                "PLAY", 'Eurostile Bold Extended', 40, WHITE)
+                "START", 'Eurostile Bold Extended', 40, WHITE)
         else:
             text_start = text_format(
-                "PLAY", 'Eurostile Bold Extended', 40, GREY)
-        if Selected_Option == "CONTROLS":
-            text_controls = text_format(
-                "CONTROLS", 'Eurostile Bold Extended', 40, YELLOW)
-        else:
-            text_controls = text_format(
-                "CONTROLS", 'Eurostile Bold Extended', 40, ORANGE)
+                "START", 'Eurostile Bold Extended', 40, GREY)
         if Selected_Option == "QUIT":
             text_quit = text_format(
                 "QUIT", 'Eurostile Bold Extended', 40, WHITE)
@@ -133,17 +124,18 @@ def main_menu_is_active():
 
         start_rect = text_start.get_rect()
         quit_rect = text_quit.get_rect()
-        controls_rect = text_controls.get_rect()
         game_display.blit(
-            text_start, (WINDOW_WIDTH/2 - (start_rect[2]/2), 300))
-        game_display.blit(text_quit, (WINDOW_WIDTH/2 - (quit_rect[2]/2), 420))
-        game_display.blit(text_controls, (WINDOW_WIDTH /
-                          2 - (controls_rect[2]/2), 360))
-        title_text = title_font.render('| STAR INVASION |', False, CYAN)
+            text_start, (WINDOW_WIDTH/2 - (start_rect[2]/2), 425))
+        game_display.blit(text_quit, (WINDOW_WIDTH/2 - (quit_rect[2]/2), 475))
+        title_text = title_font.render(
+            '| PYTHON MOUSE AUTOCLICKER |', False, WHITE)
         title_press_start_text = title_press_start_font.render(
-            'PRESS ENTER TO START', False, RED)
+            'PRESS START TO INITIALIZE AUTOCLICKER', False, WHITE)
         title_copyright_text = title_copyright_font.render(
-            '©2019 JOHN WILLIAM JONES III | TRUECODERS', False, BLUE)
+            '@ https://github.com/JohnWilliamJonesIII', False, BLUE)
+        game_display.blit(title_text, (15, 50))
+        game_display.blit(title_press_start_text, (75, 100))
+        game_display.blit(title_copyright_text, (65, 550))
         pygame.display.flip()
         clock.tick(GAME_FPS)
 
@@ -157,22 +149,7 @@ def show_background():
                      GAME_SIDE_MARGIN - GAME_BORDER_WIDTH, WINDOW_HEIGHT - GAME_TOP_WALL - GAME_BOTTOM_MARGIN - GAME_BORDER_WIDTH))
 
 
-def pause_game():
-    game_is_paused = True
-    while game_is_paused:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_is_paused = False
-                ACTUAL_GAME_IS_BEING_PLAYED = False
-                quit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    game_is_paused = False
-
-        clock.tick(GAME_FPS)
-
-
-# Main Menu Is Open, Game Should Return To Main Menu After Death
+# Main Menu Is Open
 ACTUAL_GAME_IS_BEING_PLAYED = True
 while ACTUAL_GAME_IS_BEING_PLAYED == True:
     main_menu_is_active()
@@ -187,7 +164,6 @@ while ACTUAL_GAME_IS_BEING_PLAYED == True:
 # Beginning of Autoclicker Code
 # pynput.keyboard is used to watch events of
 # keyboard for start and stop of auto-clicker
-
 
 # four variables are created to
 # control the auto-clicker
@@ -239,9 +215,10 @@ mouse = Controller()
 click_thread = ClickMouse(delay, button)
 click_thread.start()
 
-
 # on_press method takes
 # key as argument
+
+
 def on_press(key):
 
   # start_stop_key will stop clicking
